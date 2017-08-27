@@ -1,0 +1,81 @@
+$(document).ready(function(){
+  var operators=["+", "-", "/", "*", "."];
+  var operators2=["+", "-", "/", "*"];
+  var toCalc=[""];
+  var total;
+  var decimalUse=false;
+
+  function update() {
+    total = toCalc.join("");
+    $("#res").html(total);
+  }
+  $('.button').click(function() {
+    if (this.id==="clear") {
+      toCalc=[""];
+      update();
+      decimalUse=false;
+    }
+    else if (this.id==="delete") {
+      toCalc.pop();
+      update();
+    }
+    else if (this.id==="result") {
+      if (total.includes(".")===true) {
+        decimalUse=true;
+        console.log(decimalUse);
+      }
+      total=eval(total);
+      $("#res").html(total);
+      toCalc=[""];
+      toCalc.push(total);
+      decimalUse=false;
+      console.log(total);
+      /*if (total.includes(".")===true) {
+        decimalUse=true;
+      }*/
+    }
+    else {
+      if (operators.includes(toCalc[toCalc.length-1]) && operators.includes(this.id)) {
+        $("#res").html("*******ERROR*******");
+        toCalc=[""];
+      }
+      else {
+        if (total===undefined && (this.id==="/"||this.id==="*")) {
+          $("#res").html("*******ERROR*******");
+          toCalc=[""];
+        }
+        else if (total==="" && (this.id==="/"||this.id==="*")) {
+          $("#res").html("*******ERROR*******");
+          toCalc=[""];
+        }
+        else {
+          if(operators2.includes(this.id)) {
+            decimalUse=false;
+            toCalc.push(this.id);
+            update();
+          }
+          else if (this.id===".") {
+            if (decimalUse===true) {
+              $("#res").html("*******ERROR*******");
+              toCalc=[""];
+              decimalUse=false;
+            }
+            else {
+              decimalUse=true;
+              toCalc.push(this.id);
+              update();
+            }
+            /*decimalUse=true;
+            toCalc.push(this.id);
+            update();*/
+          }
+          else {
+            toCalc.push(this.id);
+            update();
+          }
+
+        }
+      }
+    }
+  });
+});
